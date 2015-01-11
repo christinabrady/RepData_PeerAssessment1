@@ -4,22 +4,62 @@ output:
   html_document:
     keep_md: true
 ---
-
+library(ggplot2)
 
 ## Loading and preprocessing the data
-
-
+activity <- read.csv("activity.csv")
+activity$date <- as.Date(activity$date)
+activity$interval <- as.factor(activity$interval)
 
 ## What is mean total number of steps taken per day?
 
-
+```{r, echo=TRUE}
+daily <- aggregate(steps~date, data=activity, sum)
+hist(daily$steps, breaks=50)
+summary(daily$steps)
+```
+The mean and median total number of steps taken per day are 10770 and 10760 respectively. This accords with what the histogram shows. 
 
 ## What is the average daily activity pattern?
-
-
+```{r, echo=TRUE}
+intervals <- aggregate(steps~interval, data=activity, mean)
+i <- ggplot(intervals, aes(x=interval, y=steps, group=1)) + geom_line()
+i
+```
+```{r, echo=TRUE}
+intervals[which.max(intervals$steps),]
+```
+The interval 835 contains the most steps on average across all of the days at 206.1698 steps.
 
 ## Imputing missing values
+```{r, echo=TRUE}
+summary(activity)
+```
+There are 2304 NAs in the entire data set. Since the number of steps varies greatly over the course of a day, I will use the mean of the corresponding 5 minute interval across all days to impute the NA values. 
+```{r, echo=TRUE}
+colnames(intervals) <- c("interval", "imputed.steps")
+ai <- merge(activity, intervals)
+ai$steps[is.na(ai$steps)] <- ai$imputed.steps[is.na(ai$steps)]
+ai <- ai[order(ai[,3], ai[,1]),]
+head(ai)
+```
 
-
+Imputing the missing values based on the mean number of steps taken in each interval does not change the mean number of steps taken in one day. It does change the median by 10 steps, though. 
+```{r, echo=TRUE}
+daily2 <- aggregate(steps~date, data=ai, sum)
+hist(daily2$steps, breaks=50)
+summary(daily2$steps)
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
+```{r, echo=TRUE}
+ai$day <- weekdays(as.Date(ai$date))
+day <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+day.type <- c(rep("Weekday", 5), rep("Weekend", 2))
+d <- data.frame(day=day, day.type=day.type)
+ai2 <- merge(ai, d)
+ai2$day.type <- as.factor(ai2$day.type)
+ai3 <- aggregate(steps~day.type+interval, data=ai2, mean)
+dplot <- ggplot(ai3, aes(x=interval, y=steps, group=1)) +geom_line() + facet_grid(day.type~.)
+dplot
+```
