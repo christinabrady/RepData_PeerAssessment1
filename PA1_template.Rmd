@@ -19,9 +19,9 @@ activity$interval <- as.factor(activity$interval)
 ```{r, echo=TRUE}
 daily <- aggregate(steps~date, data=activity, sum)
 hist(daily$steps, breaks=50)
-summary(daily$steps)
+mean(daily$steps); median(daily$steps)
 ```
-The mean and median total number of steps taken per day are 10770 and 10760 respectively. This accords with what the histogram shows. 
+The mean and median total number of steps taken per day are both 10766.19. This accords with what the histogram shows. 
 
 ## What is the average daily activity pattern?
 ```{r, echo=TRUE}
@@ -47,11 +47,11 @@ ai <- ai[order(ai[,3], ai[,1]),]
 head(ai)
 ```
 
-Imputing the missing values based on the mean number of steps taken in each interval does not change the mean number of steps taken in one day. It does change the median by 10 steps, though. 
+Imputing the missing values based on the mean number of steps taken in each interval does not change the mean number of steps taken in one day. It does change the median slightly, from 10765 to 10766.19. 
 ```{r, echo=TRUE}
 daily2 <- aggregate(steps~date, data=ai, sum)
 hist(daily2$steps, breaks=50)
-summary(daily2$steps)
+mean(daily2$steps); median(daily2$steps)
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -64,7 +64,7 @@ d <- data.frame(day=day, day.type=day.type)
 ai2 <- merge(ai, d)
 ai2$day.type <- as.factor(ai2$day.type)
 ai3 <- aggregate(steps~day.type+interval, data=ai2, mean)
-dplot <- ggplot(ai3, aes(x=interval, y=steps, group=1)) +geom_line() + facet_grid(day.type~.)
+dplot <- ggplot(ai3, aes(x=interval, y=steps, group=1)) +geom_line() + facet_grid(day.type~.) + xlab("Interval: \n 00 (left) to 2355 (right)")
 dplot
 ```
 On the weekdays, on average, activity peaks at 8:35 am. 
@@ -75,4 +75,4 @@ Whereas on the weekends, activity peaks at 9:15am.
 ```{r, echo=TRUE}
 ai3$interval[ai3$steps == max(ai3$steps[ai3$day.type=="Weekend"])]
 ```
-Furthermore, the peak is greater on weekdays, and activity levels out with minor peaks and low points throughout the day. Whereas, on weekends, the initial peak is lesser, but activity remains higher throughout the day. 
+Furthermore, the peak is greater on weekdays, and activity levels out with minor peaks and low points throughout the day. Whereas, on weekends, the initial peak is lower, but activity remains constantly higher throughout the day. 

@@ -28,6 +28,18 @@ summary(daily$steps)
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##      41    8840   10800   10800   13300   21200
 ```
+
+```r
+mean(daily$steps); median(daily$steps)
+```
+
+```
+## [1] 10766
+```
+
+```
+## [1] 10765
+```
 The mean and median total number of steps taken per day are 10770 and 10760 respectively. This accords with what the histogram shows. 
 
 ## What is the average daily activity pattern?
@@ -102,6 +114,18 @@ summary(daily2$steps)
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##      41    9820   10800   10800   12800   21200
+```
+
+```r
+mean(daily2$steps); median(daily2$steps)
+```
+
+```
+## [1] 10766
+```
+
+```
+## [1] 10766
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?

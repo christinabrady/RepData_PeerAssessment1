@@ -80,6 +80,9 @@ hist(daily$steps, breaks=50)</code></pre>
 <pre class="r"><code>summary(daily$steps)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##      41    8840   10800   10800   13300   21200</code></pre>
+<pre class="r"><code>mean(daily$steps); median(daily$steps)</code></pre>
+<pre><code>## [1] 10766</code></pre>
+<pre><code>## [1] 10765</code></pre>
 <p>The mean and median total number of steps taken per day are 10770 and 10760 respectively. This accords with what the histogram shows.</p>
 </div>
 <div id="what-is-the-average-daily-activity-pattern" class="section level2">
@@ -124,6 +127,9 @@ hist(daily2$steps, breaks=50)</code></pre>
 <pre class="r"><code>summary(daily2$steps)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##      41    9820   10800   10800   12800   21200</code></pre>
+<pre class="r"><code>mean(daily2$steps); median(daily2$steps)</code></pre>
+<pre><code>## [1] 10766</code></pre>
+<pre><code>## [1] 10766</code></pre>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
